@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public float jumpforce = 5;
     public LayerMask ground;
 
+    private int cherryCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,4 +96,19 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        
+        Debug.Log($"{other.tag}");
+
+        if (other.tag == "Collection") {
+
+            Destroy(other.gameObject);
+
+            cherryCount++;
+
+        }
+
+    }
+
 }
