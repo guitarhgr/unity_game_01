@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]private Rigidbody2D rigidbody2d;
-    [SerializeField]private Animator anim;
+    private Rigidbody2D rigidbody2d;
+    private Animator anim;
+    private int cherryCount = 0;
+
     public Collider2D coll2d;
     public float speed;
     public float jumpforce = 5;
     public LayerMask ground;
-
-    private int cherryCount = 0;
+    public Text TextCherryNum;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && coll2d.IsTouchingLayers(ground))
         {
             rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, jumpforce * Time.deltaTime);
             anim.SetBool("jumping", true);
@@ -106,6 +108,8 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
 
             cherryCount++;
+
+            TextCherryNum.text = cherryCount.ToString();
 
         }
 
