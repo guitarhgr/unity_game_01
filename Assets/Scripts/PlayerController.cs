@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float jumpforce = 5;
     public LayerMask ground;
     public Text TextCherryNum;
+    private bool isHurt = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,13 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
-        Move();
+        if (!isHurt)
+        {
+
+            Move();
+
+        }
+
         SwitchAnim();
 
     }
@@ -39,7 +46,8 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void InitCompont() {
+    private void InitCompont()
+    {
 
         rigidbody2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -76,13 +84,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void SwitchAnim() {
+    void SwitchAnim()
+    {
 
         anim.SetBool("idle", false);
 
-        if (anim.GetBool("jumping")) {
+        if (anim.GetBool("jumping"))
+        {
 
-            if (rigidbody2d.velocity.y < 0) {
+            if (rigidbody2d.velocity.y < 0)
+            {
 
                 anim.SetBool("jumping", false);
                 anim.SetBool("falling", true);
@@ -90,7 +101,26 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-        else if (coll2d.IsTouchingLayers(ground)) {
+        else if (isHurt)
+        {
+
+            anim.SetBool("hurting", true);
+            anim.SetFloat("running", 0);
+
+            if (Mathf.Abs(rigidbody2d.velocity.x) < 0.1f)
+            {
+
+                anim.SetBool("hurting", false);
+                anim.SetBool("idle", true);
+
+                isHurt = false;
+
+
+            }
+
+        }
+        else if (coll2d.IsTouchingLayers(ground))
+        {
 
             anim.SetBool("falling", false);
             anim.SetBool("idle", true);
@@ -99,11 +129,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
         Debug.Log($"{other.tag}");
 
-        if (other.tag == "Collection") {
+        if (other.tag == "Collection")
+        {
 
             Destroy(other.gameObject);
 
@@ -115,19 +147,37 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        
-        if (other.gameObject.tag == "Enemy") {
+    private void OnCollisionEnter2D(Collision2D other)
+    {
 
-            if (anim.GetBool("falling")) {
+        if (other.gameObject.tag == "Enemy")
+        {
+
+            if (anim.GetBool("falling"))
+            {
 
                 Destroy(other.gameObject);
 
-            } else {
+            }
+            else if (transform.position.x < other.gameObject.transform.position.x)
+            {
 
-                Debug.Log($"own destory");
+                rigidbody2d.velocity = new Vector2(-5, rigidbody2d.velocity.y);
+
+                isHurt = true;
+
                 anim.SetBool("hurting", true);
-                    
+
+            }
+            else if (transform.position.x > other.gameObject.transform.position.x)
+            {
+
+                rigidbody2d.velocity = new Vector2(5, rigidbody2d.velocity.y);
+
+                isHurt = true;
+
+                anim.SetBool("hurting", true);
+
             }
 
         }
