@@ -213,6 +213,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d24c7d5195604c53bb135c39605a0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ground:
+    serializedVersion: 2
+    m_Bits: 256
   speed: 5
   leftPoint: {fileID: 6306652339551529589}
   rightPoint: {fileID: 6306652340692871976}
