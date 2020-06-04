@@ -89,6 +89,13 @@ public class PlayerController : MonoBehaviour
 
         anim.SetBool("idle", false);
 
+        if (rigidbody2d.velocity.y < 0.1f && !coll2d.IsTouchingLayers(ground))
+        {
+
+            anim.SetBool("falling", true);
+
+        }
+
         if (anim.GetBool("jumping"))
         {
 
