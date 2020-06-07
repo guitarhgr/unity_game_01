@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFrogController : MonoBehaviour
+public class EnemyFrogController : Enemy
 {
     private Rigidbody2D rigibody2d;
-    private Animator animator;
+    // private Animator animator;
     private Collider2D collider2d;
     public LayerMask ground;
 
@@ -18,19 +18,20 @@ public class EnemyFrogController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         
         rigibody2d = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
         collider2d = GetComponent<Collider2D>();
 
         // transform.DetachChildren();
         leftPosX = leftPoint.position.x;
         rightPosX = rightPoint.position.x;
 
-        Destroy(leftPoint);
-        Destroy(rightPoint);
+        Destroy(leftPoint.gameObject);
+        Destroy(rightPoint.gameObject);
 
     }
 
@@ -116,5 +117,20 @@ public class EnemyFrogController : MonoBehaviour
         }
 
     }
+
+    // public void Death()
+    // {
+
+    //     Destroy(gameObject);
+
+    // }
+
+    // public void JumpOn()
+    // {
+
+    //     animator.SetTrigger("death");
+
+    // }
+
 
 }
