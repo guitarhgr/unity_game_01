@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     {
 
         //Move();
+        Jump();
+        Crouch();
 
     }
 
@@ -82,24 +84,13 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetButton("Jump") && coll2d.IsTouchingLayers(ground))
-        {
-            rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, jumpforce * Time.fixedDeltaTime);
-
-            jumpAudio.Play();
-
-            anim.SetBool("jumping", true);
-
-        }
-
-        Crouch();
 
     }
 
     void SwitchAnim()
     {
 
-        anim.SetBool("idle", false);
+        // anim.SetBool("idle", false);
 
         if (rigidbody2d.velocity.y < 0.1f && !coll2d.IsTouchingLayers(ground))
         {
@@ -131,7 +122,7 @@ public class PlayerController : MonoBehaviour
             {
 
                 anim.SetBool("hurting", false);
-                anim.SetBool("idle", true);
+                // anim.SetBool("idle", true);
 
                 isHurt = false;
 
@@ -143,7 +134,7 @@ public class PlayerController : MonoBehaviour
         {
 
             anim.SetBool("falling", false);
-            anim.SetBool("idle", true);
+            // anim.SetBool("idle", true);
 
         }
 
@@ -246,6 +237,21 @@ public class PlayerController : MonoBehaviour
     {
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
+
+    private void Jump()
+    {
+
+        if (Input.GetButton("Jump") && coll2d.IsTouchingLayers(ground))
+        {
+            rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, jumpforce * Time.fixedDeltaTime);
+
+            jumpAudio.Play();
+
+            anim.SetBool("jumping", true);
+
+        }
 
     }
 
